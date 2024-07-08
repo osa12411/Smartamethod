@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Control</title>
+    <style>
+        .control-panel {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button-row {
+            margin: 10px;
+        }
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="control-panel">
+        <div class="button-row">
+            <button onclick="sendDirection('up')">Up</button>
+        </div>
+        <div class="button-row">
+            <button onclick="sendDirection('left')">Left</button>
+            <button onclick="sendDirection('stop')">Stop</button>
+            <button onclick="sendDirection('right')">Right</button>
+        </div>
+        <div class="button-row">
+            <button onclick="sendDirection('down')">Down</button>
+        </div>
+    </div>
+
+    <form id="controlForm" style="display: none;">
+        <input type="hidden" name="direction" id="directionInput">
+    </form>
+
+    <div class="message" id="message"></div>
+    <script>
+        async function sendDirection(direction) {
+            document.getElementById('directionInput').value = direction;
+
+                  const formData = new FormData(document.getElementById('controlForm'));
+            
+            const response = await fetch('control.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+
+            const messageElement = document.getElementById('message');
+            if (result === 'success') {
+                messageElement.textContent = "Movement recorded successfully";
+                messageElement.style.color = "green";
+            } else {
+                messageElement.textContent = "Error recording movement";
+                messageElement.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
