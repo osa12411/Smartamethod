@@ -50,7 +50,6 @@
                 body: formData
             });
             const result = await response.text();
-
             const messageElement = document.getElementById('message');
             if (result === 'success') {
                 messageElement.textContent = "Movement recorded successfully";
